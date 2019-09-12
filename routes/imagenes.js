@@ -23,3 +23,8 @@ app.get('/:tipo/:img', (req, res, next) => {
 });
 
 module.exports = app;
+
+// /// client id
+// 171715616822-d5i1khoro5n7ofiee5vhpmro08d2m5h2.apps.googleusercontent.com
+// // client secret
+// J1Egcs6dKwhcSIaCwXVHmVs9
