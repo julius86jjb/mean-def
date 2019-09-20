@@ -26,7 +26,7 @@ app.get('/', (req, res, next) => {
 
     Usuario.find({}, 'nombre email role img')
         .skip(desde)
-        .limit(5)
+        .limit(50)
         .exec(
             (err, usuarios) => {
                 if (err) {
@@ -83,7 +83,7 @@ app.get('/', (req, res, next) => {
 // =========================================================
 
 
-app.post('/', mdAuteticacion.verificaToken, function(req, res) {
+app.post('/', function(req, res) {
 
     let body = req.body;
 

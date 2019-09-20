@@ -1,16 +1,32 @@
 // Requires
 
 var express = require('express');
+var cors = require('cors')
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var fileUpload = require('express-fileupload');
+// var fileUpload = require('express-fileupload');
 
-
-
-// Inicializar variables
 
 var app = express();
-app.use(fileUpload({ useTempFiles: true }));
+
+
+// MIDDLEWARES
+
+// app.use(fileUpload({ useTempFiles: true }));
+app.use(cors())
+
+// Hablilitando el CORS
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+    next();
+});
+
+
+
+//  BodyParser
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

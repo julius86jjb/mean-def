@@ -12,7 +12,9 @@ app.use(fileUpload({ useTempFiles: true }));
 
 app.put('/:tipo/:id', (req, res, next) => {
 
+
     var tipo = req.params.tipo;
+
     var id = req.params.id
 
     //Tipos de coleccion
@@ -38,8 +40,11 @@ app.put('/:tipo/:id', (req, res, next) => {
     // Obtener nombre del archivo
 
     var archivo = req.files.imagen;
+
     var nombreCortado = archivo.name.split('.');
-    var extensionArchivo = nombreCortado[nombreCortado - 1];
+
+    var extensionArchivo = nombreCortado[nombreCortado.length - 1];
+
 
     var extensionesValidas = ['png', 'jpg', 'jpeg', 'gif'];
 
@@ -97,7 +102,7 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
             var pathViejo = './uploads/usuarios/' + usuario.img;
 
             if (fs.existsSync(pathViejo)) {
-                fs.unlink(pathViejo);
+                fs.unlinkSync(pathViejo);
             }
 
             usuario.img = nombreArchivo;
@@ -131,7 +136,7 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
             var pathViejo = './uploads/medicos/' + medico.img;
 
             if (fs.existsSync(pathViejo)) {
-                fs.unlink(pathViejo);
+                fs.unlinkSync(pathViejo);
             }
 
             medico.img = nombreArchivo;
@@ -151,7 +156,7 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
     }
 
     if (tipo === 'hospitales') {
-        Hospitales.findById(id, (err, hospital) => {
+        Hospital.findById(id, (err, hospital) => {
 
             if (!hospital) {
                 return res.status(400).json({
@@ -165,7 +170,7 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
             var pathViejo = './uploads/hospitales/' + hospital.img;
 
             if (fs.existsSync(pathViejo)) {
-                fs.unlink(pathViejo);
+                fs.unlinkSync(pathViejo);
             }
 
             hospital.img = nombreArchivo;
@@ -185,4 +190,4 @@ function subirPorTipo(tipo, id, nombreArchivo, res) {
     }
 }
 
-module.exports = app
+module.exports = app;

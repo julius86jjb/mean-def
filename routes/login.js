@@ -37,7 +37,8 @@ async function verify(token) {
 
 app.post('/google', async(req, res) => {
 
-    var token = req.body.idToken;
+    var token = req.body.token;
+    console.log(token);
 
     var googleUser = await verify(token)
         .catch(e => {
@@ -48,7 +49,7 @@ app.post('/google', async(req, res) => {
 
         });
 
-    Usuario.findOne({ email: googleUser.email }, (err, UsuarioDB) => {
+    Usuario.findOne({ email: googleUser.email }, (err, usuarioDB) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
@@ -57,21 +58,21 @@ app.post('/google', async(req, res) => {
             });
         }
 
-        if (UsuarioDB) {
+        if (usuarioDB) {
             //exsite en nuestra DB pero se registro sin google
-            if (UsuarioDB.google === false) {
+            if (usuarioDB.google === false) {
                 return res.status(400).json({
                     ok: false,
                     mensaje: 'Debe de usar su autenticacion normal',
                 });
             } else {
-                let token = jwt.sign({ usuario: UsuarioDB }, SEED, { expiresIn: 14400 })
+                let token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 14400 })
 
                 res.status(200).json({
                     ok: true,
-                    usuario: UsuarioDB,
+                    usuario: usuarioDB,
                     token: token,
-                    id: UsuarioDB.id
+                    id: usuarioDB.id
                         // token: token
                 })
             }
@@ -93,14 +94,13 @@ app.post('/google', async(req, res) => {
                     });
                 }
 
-                let token = jwt.sign({ usuario: UsuarioDB }, SEED, { expiresIn: 14400 })
+                let token = jwt.sign({ usuario: usuarioDB }, SEED, { expiresIn: 14400 })
 
                 res.status(200).json({
                     ok: true,
-                    usuario: UsuarioDB,
+                    usuario: usuarioDB,
                     token: token,
-                    id: UsuarioDB.id
-                        // token: token
+                    id: usuarioDB._id
                 })
             })
         }
