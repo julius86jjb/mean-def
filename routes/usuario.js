@@ -24,9 +24,9 @@ app.get('/', (req, res, next) => {
     var desde = req.query.desde || 0; //parametro opcional, si viene algo en el query, lo asignamos, sino, 0
     desde = Number(desde);
 
-    Usuario.find({}, 'nombre email role img')
+    Usuario.find({}, 'nombre email role img google')
         .skip(desde)
-        .limit(50)
+        .limit(10)
         .exec(
             (err, usuarios) => {
                 if (err) {
@@ -50,6 +50,8 @@ app.get('/', (req, res, next) => {
             }
         )
 })
+
+
 
 // =========================================================
 // Verificar Token // forma 1 "las operaciones debajo de esta funcion requieren token"
@@ -123,7 +125,7 @@ module.exports = app;
 // =========================================================
 
 
-app.put('/:id', mdAuteticacion.verificaToken, (req, res) => {
+app.put('/:id', [mdAuteticacion.verificaToken, mdAuteticacion.verificaADMIN_o_MismoUsuario], (req, res) => {
     let id = req.params.id;
     // let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado'])
     let body = req.body;
@@ -148,7 +150,7 @@ app.put('/:id', mdAuteticacion.verificaToken, (req, res) => {
 
         usuario.nombre = body.nombre;
         usuario.email = body.email;
-        usuario.rol = body.rol;
+        usuario.role = body.role;
 
         usuario.save((err, usuarioGuardado) => {
 
@@ -210,6 +212,7 @@ app.delete('/:id', mdAuteticacion.verificaToken, function(req, res) {
 
     })
 })
+
 
 
 module.exports = app;

@@ -49,6 +49,7 @@ app.get('/coleccion/:tabla/:busqueda', (req, res, next) => {
 
 
 
+
 // ==================================================== //
 // Busqueda general
 // ==================================================== //
@@ -117,7 +118,7 @@ function buscarUsuarios(busqueda, expresionRegular) {
 
     return new Promise((resolve, reject) => {
 
-        Usuario.find({}, 'nombre email rol')
+        Usuario.find({}, 'nombre email rol  img')
             .or([{ nombre: expresionRegular }, { email: expresionRegular }])
             .exec((err, usuarios) => {
                 if (err) {
@@ -130,6 +131,9 @@ function buscarUsuarios(busqueda, expresionRegular) {
     })
 
 }
+
+
+
 
 
 module.exports = app;

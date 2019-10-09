@@ -14,7 +14,23 @@ var CLIENT_ID = require('../config/config').CLIENT_ID;
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 
+var mdAutenticacion = require('../middlewares/autenticacion')
 
+
+// ============================================== //
+// Auntenticacion Google
+// ============================================== //
+
+app.get('/renuevatoken', mdAutenticacion.verificaToken, (req, res) => {
+
+    let token = jwt.sign({ usuario: req.usuario }, SEED, { expiresIn: 14400 })
+
+
+    res.status(200).json({
+        ok: true,
+        token
+    });
+});
 // ============================================== //
 // Auntenticacion Google
 // ============================================== //
@@ -72,7 +88,8 @@ app.post('/google', async(req, res) => {
                     ok: true,
                     usuario: usuarioDB,
                     token: token,
-                    id: usuarioDB.id
+                    id: usuarioDB.id,
+                    menu: obtenerMenu(usuarioDB.role)
                         // token: token
                 })
             }
@@ -100,7 +117,8 @@ app.post('/google', async(req, res) => {
                     ok: true,
                     usuario: usuarioDB,
                     token: token,
-                    id: usuarioDB._id
+                    id: usuarioDB._id,
+                    menu: obtenerMenu(usuarioDB.role)
                 })
             })
         }
@@ -133,14 +151,14 @@ app.post('/', (req, res) => {
         if (!UsuarioDB) {
             return res.status(400).json({
                 ok: false,
-                mensaje: 'Credenciales incorrectas1',
+                mensaje: 'Credenciales incorrectas',
                 errors: err
             })
         }
         if (!bcrypt.compareSync(body.password, UsuarioDB.password)) {
             return res.status(400).json({
                 ok: false,
-                mensaje: 'Credenciales incorrectas2',
+                mensaje: 'Credenciales incorrectas',
                 errors: err
             })
         }
@@ -153,7 +171,8 @@ app.post('/', (req, res) => {
             ok: true,
             usuario: UsuarioDB,
             token: token,
-            id: UsuarioDB._id
+            id: UsuarioDB._id,
+            menu: obtenerMenu(UsuarioDB.role)
                 // token: token
         })
     })
@@ -162,5 +181,40 @@ app.post('/', (req, res) => {
 
 })
 
+function obtenerMenu(ROLE) {
+
+    var menu = [{
+            titulo: 'Principal',
+            icono: 'mdi mdi-gauge',
+            submenu: [
+                { titulo: 'Dashboard', url: '/dashboard' },
+                { titulo: 'Progress Bar', url: '/progress' },
+                { titulo: 'Gráficas', url: '/graficas1' },
+                { titulo: 'Promesas', url: '/promesas' },
+                { titulo: 'RxJs', url: '/rxjs' },
+
+            ]
+        },
+        {
+            titulo: 'Mantenimiento',
+            icono: 'mdi mdi-folder-lock-open',
+            submenu: [
+                // { titulo: 'Usuarios', url: '/usuarios' },
+                { titulo: 'Hospitales', url: '/hospitales' },
+                { titulo: 'Medicos', url: '/medicos' },
+
+
+            ]
+        }
+    ];
+
+    console.log(ROLE)
+
+    if (ROLE === 'ADMIN_ROLE') {
+        menu[1].submenu.unshift({ titulo: 'Usuarios', url: '/usuarios' }) // inserta en esa posicion del array al principio, en este caso la "0",  (el "push" inserta al final)
+    }
+
+    return menu;
+}
 
 module.exports = app;

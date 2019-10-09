@@ -42,7 +42,7 @@ app.put('/:tipo/:id', (req, res, next) => {
     var archivo = req.files.imagen;
 
     var nombreCortado = archivo.name.split('.');
-
+            
     var extensionArchivo = nombreCortado[nombreCortado.length - 1];
 
 
