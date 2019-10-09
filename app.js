@@ -1,10 +1,11 @@
 // Requires
-
+require('./config/config');
 var express = require('express');
 var cors = require('cors')
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 // var fileUpload = require('express-fileupload');
+
 
 
 var app = express();
@@ -81,6 +82,6 @@ app.use('/', appRoutes);
 
 // Escuchar Peticiones
 
-app.listen(3000, () => {
-    console.log('Express Server escuchando en puerto 3000: \x1b[32m%s\x1b[0m', 'online');
+app.listen(process.env.PORT, () => {
+    console.log('Express Server escuchando en puerto : \x1b[32m%s\x1b[0m', 'online', process.env.PORT);
 });
