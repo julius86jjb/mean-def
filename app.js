@@ -54,7 +54,7 @@ var imagenesRoutes = require('./routes/imagenes');
 
 // Conexion DB
 
-mongoose.connection.openUri(process.env.URLDB, (err, res) => {
+mongoose.connection.openUri('mongodb+srv://julius_1986:HjQLZr29B4X4@cluster0-mewaq.mongodb.net/hospitalDB?retryWrites=true&w=majority', (err, res) => {
     if (err) throw err;
     console.log('Base de Datos: \x1b[32m%s\x1b[0m', 'online');
 });
