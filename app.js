@@ -4,6 +4,7 @@ var express = require('express');
 var cors = require('cors')
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+const path = require('path');
 // var fileUpload = require('express-fileupload');
 
 
@@ -31,6 +32,9 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+
+app.use(express.static(path.resolve(__dirname, './public')));
 
 
 // importar rutas

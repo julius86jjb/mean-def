@@ -1,0 +1,6 @@
+user: julius_1986
+pass: HjQLZr29B4X4
+
+mongodb+srv://julius_1986:<HjQLZr29B4X4>@cluster0-mewaq.mongodb.net/cafe
+
+mongodb+srv://julius_1986:HjQLZr29B4X4@cluster0-mewaq.mongodb.net/hospitalDB?retryWrites=true&w=majority
